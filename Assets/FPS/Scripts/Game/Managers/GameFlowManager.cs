@@ -22,16 +22,23 @@ namespace Unity.FPS.Game
         [Tooltip("Duration of delay before the win message")]
         public float DelayBeforeWinMessage = 2f;
 
+        public float DelayBeforeRestart = 5f;
+
         [Tooltip("Sound played on win")] public AudioClip VictorySound;
 
         [Header("Lose")] [Tooltip("This string has to be the name of the scene you want to load when losing")]
         public string LoseSceneName = "LoseScene";
 
+        [Header("TimeLimit")] [Tooltip("The time limit for losing the game. Unit: Sec")]
+        public float TimeLimit;
 
         public bool GameIsEnding { get; private set; }
 
         float m_TimeLoadEndGameScene;
         string m_SceneToLoad;
+
+        private float timer;
+        private int deathCount;
 
         void Awake()
         {
@@ -59,6 +66,12 @@ namespace Unity.FPS.Game
                     SceneManager.LoadScene(m_SceneToLoad);
                     GameIsEnding = false;
                 }
+            }
+            timer += Time.deltaTime;
+            if (timer > TimeLimit)
+            {
+                m_SceneToLoad = LoseSceneName;
+                m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay;
             }
         }
 
@@ -101,9 +114,14 @@ namespace Unity.FPS.Game
             }
             else
             {
-                m_SceneToLoad = LoseSceneName;
-                m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay;
+                deathCount++;
+                RestartGame();
             }
+        }
+
+        private void RestartGame()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         void OnDestroy()
