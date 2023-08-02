@@ -245,13 +245,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EndSceneLoadDelay: 3
+  RestartSceneLoadDelay: 5
   EndGameFadeCanvasGroup: {fileID: 6089522275397732777}
   WinSceneName: WinScene
   DelayBeforeFadeToBlack: 4
   WinGameMessage: All objectives completed
+  RestartGameMessage: 
   DelayBeforeWinMessage: 2
   VictorySound: {fileID: 8300000, guid: a533219934975884e81c1add37af9930, type: 3}
   LoseSceneName: LoseScene
+  TimeLimit: 300
 --- !u!114 &1315839542190839938
 MonoBehaviour:
   m_ObjectHideFlags: 0

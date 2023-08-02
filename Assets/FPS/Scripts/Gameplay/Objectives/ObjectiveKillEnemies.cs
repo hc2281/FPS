@@ -14,7 +14,7 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Start sending notification about remaining enemies when this amount of enemies is left")]
         public int NotificationEnemiesRemainingThreshold = 3;
 
-        int m_KillTotal;
+        public static int m_KillTotal;
 
         protected override void Start()
         {
