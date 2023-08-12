@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class HeartRateService : MonoBehaviour
@@ -12,6 +10,7 @@ public class HeartRateService : MonoBehaviour
     public bool isScanningCharacteristics = false;
     public bool isSubscribed = false;
     public bool startScan = true;
+    public bool baselineCalculated = false;
 
     public string selectedDeviceId;
     public string selectedServiceId;
@@ -19,11 +18,13 @@ public class HeartRateService : MonoBehaviour
 
     public TMP_Text bpm;
 
+    public float baselineHeartRate = 0;  // This will hold the baseline after 60 samples
     public int heartBeatsPerMinute = 0;
-    public int heartRateAverage = 0;
+    public float heartRateAverage = 0;
     public int heartRateSamples = 0;
-    private long totalHeartRate = 0;
 
+    private long totalHeartRate = 0;
+    private const int MaxSamples = 60;  // We want 60 samples
     private const string HeartRateDeviceName = "Polar H10";
     private const string HeartRateServiceID = "180D";
     private const string HeartRateCharacteristicID = "2A37";
@@ -130,11 +131,16 @@ public class HeartRateService : MonoBehaviour
                 heartRateSamples += 1;
 
                 heartBeatsPerMinute = (int)res.buf[1];
-                heartRateAverage = (int)(totalHeartRate / heartRateSamples);
+                heartRateAverage = (float)(totalHeartRate / (heartRateSamples * 1.0));
+
+                if (heartRateSamples == MaxSamples)
+                {
+                    baselineHeartRate = heartRateAverage;
+                    baselineCalculated = true;
+                }
 
                 //bpm.text = $"Heart Rate: {res.buf[1].ToString()}, Average: {(float)(totalHeartRate / heartRateSamples)}";
                 bpm.text = $"{res.buf[1].ToString()}";
-
             }
         }
         {

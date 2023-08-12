@@ -38,6 +38,7 @@ namespace Unity.FPS.Game
         [Tooltip("The time limit for losing the game. Unit: Sec")]
         public float TimeLimit = 300;
         public bool GameIsEnding { get; private set; }
+        private bool gameStarted = false;
 
         float m_TimeLoadEndGameScene;
         string m_SceneToLoad;
@@ -47,8 +48,7 @@ namespace Unity.FPS.Game
         static float totalTime = 0f;
         static int deathCount;
 
-        private bool gameStarted = false;
-
+        
         void Awake()
         {
             EventManager.AddListener<AllObjectivesCompletedEvent>(OnAllObjectivesCompleted);

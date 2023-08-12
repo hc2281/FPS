@@ -8,6 +8,7 @@ namespace Unity.FPS.UI
     {
         public GameFlowManager gameFlowManager;
         private TextMeshProUGUI timerText;
+        private bool isCounting;
 
         private void Start()
         {
@@ -37,16 +38,17 @@ namespace Unity.FPS.UI
 
         private void Update()
         {
-            if (gameFlowManager == null)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.LogError("GameFlowManager is not set in the inspector");
-                return;
+                isCounting = true;  
             }
-
-            float timerValue = gameFlowManager.GetTimer();
-            int minutes = Mathf.FloorToInt(timerValue / 60F);
-            int seconds = Mathf.FloorToInt(timerValue - minutes * 60);
-            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            if (isCounting)
+            {
+                float timerValue = gameFlowManager.GetTimer();
+                int minutes = Mathf.FloorToInt(timerValue / 60F);
+                int seconds = Mathf.FloorToInt(timerValue - minutes * 60);
+                timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            }
         }
 
     }
