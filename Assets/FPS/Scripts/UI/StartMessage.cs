@@ -4,39 +4,49 @@ using UnityEngine;
 
 public class StartMessage : MonoBehaviour
 {
-    public TextMeshProUGUI startText;
-    //public HeartRateService heartRateService;
-    //public float delay = 0.3f;  // Delay in seconds between each dot
+    public TextMeshProUGUI loadingText;
+    public HeartRateService heartRateService;
+    public GameObject maskPanel;
+    public float delay = 0.3f;  // Delay in seconds between each dot
 
-    //public string baseText = "Connecting";
+    public bool isReady;
 
-    //public bool isReady;
-
-    void Start()
+    protected void Start()
     {
-        startText.gameObject.SetActive(true);
-        //isReady = heartRateService.isSubscribed;
-        //StartCoroutine(AnimateDots());
+        ShowLoadingUI();
+
+        heartRateService.OnConnected += HideLoadingUI;
     }
 
-    void Update()
+    public void ShowLoadingUI()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        maskPanel.SetActive(true);
+        loadingText.gameObject.SetActive(true);
+        StartCoroutine(AnimateDots());
+
+        // Mute or pause audio
+        AudioListener.volume = 0f;
+
+    }
+
+    IEnumerator AnimateDots()
+    {
+        while (true)
         {
-            startText.gameObject.SetActive(false);
-         }
+            for (int i = 0; i <= 3; i++)
+            {
+                loadingText.text = "Connecting..." + new string('.', i);
+                yield return new WaitForSeconds(delay);
+            }
+        }
     }
 
-    //IEnumerator AnimateDots()
-    //{
-    //    while (true)
-    //    {
-    //        for (int i = 0; i <= 3; i++)
-    //        {
-    //            startText.text = baseText + new string('.', i);
-    //            yield return new WaitForSeconds(delay);
-    //        }
-    //    }
-    //}
+    public void HideLoadingUI()
+    {
+        loadingText.gameObject.SetActive(false);
+        maskPanel.SetActive(false);
+
+        AudioListener.volume = 0.5f;
+    }
 
 }

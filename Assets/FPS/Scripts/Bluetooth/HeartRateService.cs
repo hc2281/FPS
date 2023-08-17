@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class HeartRateService : MonoBehaviour
 {
@@ -10,31 +9,31 @@ public class HeartRateService : MonoBehaviour
     public bool isScanningCharacteristics = false;
     public bool isSubscribed = false;
     public bool startScan = true;
-    public bool baselineCalculated = false;
 
     public string selectedDeviceId;
     public string selectedServiceId;
     public string selectedCharacteristicId;
 
-    public TMP_Text bpm;
-
-    public float baselineHeartRate = 0;  // This will hold the baseline after 60 samples
+    public float heartRateAverage = 0f;
     public int heartBeatsPerMinute = 0;
-    public float heartRateAverage = 0;
     public int heartRateSamples = 0;
 
     private long totalHeartRate = 0;
-    private const int MaxSamples = 60;  // We want 60 samples
     private const string HeartRateDeviceName = "Polar H10";
     private const string HeartRateServiceID = "180D";
     private const string HeartRateCharacteristicID = "2A37";
 
+    public List<int> heartRateData = new List<int>();
+
+    public delegate void ConnectionHandler();
+    public event ConnectionHandler OnConnected;
+
     Dictionary<string, string> devices = new Dictionary<string, string>();
     string lastError;
 
-    void Start() {
-        bpm.text = "0";
-    }
+    //void Start() {
+    //    //bpm.text = "0";
+    //}
 
     // Update is called once per frame
     void Update()
@@ -124,6 +123,7 @@ public class HeartRateService : MonoBehaviour
 
         if (isSubscribed)
         {
+            OnConnected?.Invoke();
             HeartRateAPI.BLEData res = new HeartRateAPI.BLEData();
             while (HeartRateAPI.PollData(out res, false))
             {
@@ -133,14 +133,8 @@ public class HeartRateService : MonoBehaviour
                 heartBeatsPerMinute = (int)res.buf[1];
                 heartRateAverage = (float)(totalHeartRate / (heartRateSamples * 1.0));
 
-                if (heartRateSamples == MaxSamples)
-                {
-                    baselineHeartRate = heartRateAverage;
-                    baselineCalculated = true;
-                }
-
+                heartRateData.Add(heartBeatsPerMinute);
                 //bpm.text = $"Heart Rate: {res.buf[1].ToString()}, Average: {(float)(totalHeartRate / heartRateSamples)}";
-                bpm.text = $"{res.buf[1].ToString()}";
             }
         }
         {
@@ -150,6 +144,7 @@ public class HeartRateService : MonoBehaviour
             if (lastError != res.msg)
             {
                 Debug.Log($"Heart Rate Service: {res.msg}");
+                
                 lastError = res.msg;
             }
         }

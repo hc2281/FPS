@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace Unity.FPS.Game
 {
@@ -38,7 +39,9 @@ namespace Unity.FPS.Game
         [Tooltip("The time limit for losing the game. Unit: Sec")]
         public float TimeLimit = 300;
         public bool GameIsEnding { get; private set; }
-        private bool gameStarted = false;
+        public bool gameStarted = false;
+
+        public static event Action OnGameSessionEnd;
 
         float m_TimeLoadEndGameScene;
         string m_SceneToLoad;
@@ -58,22 +61,25 @@ namespace Unity.FPS.Game
 
         void Start()
         {
-            AudioUtility.SetMasterVolume(1);
+            // Try to find the maskPanel in the current scene
+            GameObject panel = GameObject.Find("Panel");
+
+            if (panel == null)
+            {
+                AudioUtility.SetMasterVolume(1);
+                // If the maskPanel is not found, start the game
+                gameStarted = true;
+            }
         }
-       
+
         void Update()
         {
-            if (!gameStarted)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    StartGame();
-                }
-            }
-            else
+            if (gameStarted)
             {
                 if (GameIsEnding)
                 {
+                    OnGameSessionEnd?.Invoke();
+
                     float timeRatio = 1 - (m_TimeLoadEndGameScene - Time.time) / EndSceneLoadDelay;
                     EndGameFadeCanvasGroup.alpha = timeRatio;
 
@@ -96,15 +102,6 @@ namespace Unity.FPS.Game
                     }
                 }
             }
-        }
-
-
-        void StartGame()
-        {
-            gameStarted = true;
-            EndGameFadeCanvasGroup.gameObject.SetActive(false); 
-            Cursor.lockState = CursorLockMode.Locked; 
-            Cursor.visible = false; 
         }
 
         public float GetTimer()

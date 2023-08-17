@@ -8,7 +8,6 @@ namespace Unity.FPS.UI
     {
         public GameFlowManager gameFlowManager;
         private TextMeshProUGUI timerText;
-        private bool isCounting;
 
         private void Start()
         {
@@ -38,11 +37,7 @@ namespace Unity.FPS.UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                isCounting = true;  
-            }
-            if (isCounting)
+            if (gameFlowManager.gameStarted)
             {
                 float timerValue = gameFlowManager.GetTimer();
                 int minutes = Mathf.FloorToInt(timerValue / 60F);

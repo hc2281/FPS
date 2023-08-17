@@ -20,6 +20,8 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Used to flip the horizontal input axis")]
         public bool InvertXAxis = false;
 
+        public GameFlowManager gameFlowManager;
+
         GameFlowManager m_GameFlowManager;
         PlayerCharacterController m_PlayerCharacterController;
         bool m_FireInputWasHeld;
@@ -27,13 +29,21 @@ namespace Unity.FPS.Gameplay
         void Start()
         {
             m_PlayerCharacterController = GetComponent<PlayerCharacterController>();
-            DebugUtility.HandleErrorIfNullGetComponent<PlayerCharacterController, PlayerInputHandler>(
-                m_PlayerCharacterController, this, gameObject);
+                DebugUtility.HandleErrorIfNullGetComponent<PlayerCharacterController, PlayerInputHandler>(m_PlayerCharacterController, this, gameObject);
             m_GameFlowManager = FindObjectOfType<GameFlowManager>();
-            DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, PlayerInputHandler>(m_GameFlowManager, this);
+                DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, PlayerInputHandler>(m_GameFlowManager, this);
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (gameFlowManager.gameStarted)
+            {
+                
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else 
+            {
+                Cursor.lockState = CursorLockMode.None; // Free the cursor
+                Cursor.visible = true; // Make the cursor visible
+            }
         }
 
         void LateUpdate()
