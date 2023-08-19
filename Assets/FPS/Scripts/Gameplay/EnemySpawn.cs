@@ -1,58 +1,64 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawn : MonoBehaviour
+namespace Unity.FPS.Gameplay
 {
-    public DifficultyController difficultyController;
-    public GameObject enemyPrefab; // Assign your enemy prefab here
-    public Transform detectionArea; // This can be a trigger collider around the area you want to detect the player
-    public float spawnRadius; // Radius within which enemies will spawn randomly around the spawner
-    private bool playerDetected = false;
-
-    private void OnTriggerEnter(Collider other)
+    public class EnemySpawn : MonoBehaviour
     {
-        Debug.Log("Trigger entered by: " + other.gameObject.name); // This will show you which GameObject entered the trigger
-        if (!playerDetected && other.CompareTag("Player"))
-        {
-            Debug.Log("Player detected!"); // This will confirm if the player was detected
-            playerDetected = true;
-            SpawnEnemies();
-        }
-    }
+        public DifficultyController difficultyController;
+        public GameObject enemyPrefab; // Assign your enemy prefab here
+        public float xMin;
+        public float xMax;
+        public float yMin;
+        public float yMax;
+        public float zMin;
+        public float zMax;
+        public int EnemyCount;
 
-    private void SpawnEnemies()
-    {
-        int enemyCount = 0;
+        private bool hasSpawned = false;
 
-        switch (difficultyController.DifficultyLevel)
+        private void OnTriggerEnter(Collider other)
         {
-            case "easy":
-                enemyCount = 5;
-                break;
-            case "medium":
-                enemyCount = 10;
-                break;
-            case "hard":
-                enemyCount = 20;
-                break;
+            if (hasSpawned) return;
+
+            var player = other.GetComponent<PlayerCharacterController>();
+            if (player != null)
+            {
+                StartCoroutine(SpawnEnemies());
+                hasSpawned = true; // Ensure the enemies only spawn once
+                //Debug.Log(other + " entered the trigger area!");
+            }
         }
 
-        for (int i = 0; i < enemyCount; i++)
+        IEnumerator SpawnEnemies()
         {
-            Vector3 spawnPosition = GetRandomSpawnPosition();
-            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            int i = 0;
+            while (true) // Infinite loop, but we'll break out of it once we've spawned enough enemies
+            {
+                switch (difficultyController.DifficultyLevel)
+                {
+                    case "easy":
+                        EnemyCount = 5;
+                        break;
+                    case "medium":
+                        EnemyCount = 10;
+                        break;
+                    case "hard":
+                        EnemyCount = 20;
+                        break;
+                }
+
+                if (i >= EnemyCount)
+                    break; // Exit the loop if we've spawned enough enemies
+
+                float xPos = Random.Range(xMin, xMax);
+                float yPos = Random.Range(yMin, yMax);
+                float zPos = Random.Range(zMin, zMax);
+                Instantiate(enemyPrefab, new Vector3(xPos, yPos, zPos), Quaternion.identity);
+                yield return new WaitForSeconds(0.1f);
+                i += 1;
+            }
+            //Debug.Log("Have generated " + i + " enemies.");
         }
-    }
-
-    private Vector3 GetRandomSpawnPosition()
-    {
-        Vector3 randomOffset = new Vector3(
-            Random.Range(-spawnRadius, spawnRadius),
-            0,  // Assuming you still want to spawn on a flat surface
-            Random.Range(-spawnRadius, spawnRadius)
-        );
-
-        return transform.position + randomOffset;
     }
 }

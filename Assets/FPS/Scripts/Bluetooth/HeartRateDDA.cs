@@ -39,12 +39,12 @@ public class HeartRateDDA : MonoBehaviour
         float HeartRateMax = (1f + ScopePercentage) * HeartRateMedian;
 
         // Compute difficulty level, ranging from 0 to 1
-        difficultyindex = Mathf.Clamp((HeartRate - HeartRateMin) / (HeartRateMax - HeartRateMin), 0f, 1f);
+        difficultyindex = Mathf.Clamp((HeartRateMax - HeartRate) / (HeartRateMax - HeartRateMin), 0f, 1f);
         difficultyindex = Mathf.Round(difficultyindex * 100f) / 100f;
 
         if (difficultyindex < 1f / 3f)
         {
-            difficultyLevel = "hard";
+            difficultyLevel = "easy";
         }
         else if (difficultyindex < 2f / 3f)
         {
@@ -52,7 +52,7 @@ public class HeartRateDDA : MonoBehaviour
         }
         else
         {
-            difficultyLevel = "easy";
+            difficultyLevel = "hard";
         }
 
     }

@@ -82,6 +82,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6023316067820363403, guid: 15258371177e93745ad14ae7369a24cb,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6370966072896210225, guid: 15258371177e93745ad14ae7369a24cb,
         type: 3}
       propertyPath: MaxHealth

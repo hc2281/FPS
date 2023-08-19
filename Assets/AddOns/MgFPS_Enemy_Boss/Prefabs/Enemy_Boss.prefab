@@ -110,7 +110,7 @@ MonoBehaviour:
   PathReachingRadius: 2
   OrientationSpeed: 10
   DeathDuration: 0
-  SwapToNextWeapon: 0
+  SwapToNextWeapon: 1
   DelayAfterWeaponSwap: 0
   EyeColorMaterial: {fileID: 2100000, guid: eb81205e59ba83b44ad5391a1d080f18, type: 2}
   DefaultEyeColor: {r: 0, g: 1, b: 0.77155066, a: 1}
