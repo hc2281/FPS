@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Collections.Generic;
 
 namespace Unity.FPS.Game
 {
-    public class GameFlowManager : MonoBehaviour
+    public class GameFlowManager : MonoBehaviour, IGameStartNotifier
     {
         [Header("Parameters")]
         [Tooltip("Duration of the fade-to-black at the end of the game")]
@@ -39,38 +40,72 @@ namespace Unity.FPS.Game
         [Tooltip("The time limit for losing the game. Unit: Sec")]
         public float TimeLimit = 300;
         public bool GameIsEnding { get; private set; }
-        public bool gameStarted = false;
+        public bool gameStarted;
+        public bool PlayerIsDead { get; private set; }
 
-        public static event Action OnGameSessionEnd;
+        //public delegate void GameStartEventHandler(bool started);
+        //public event GameStartEventHandler OnGameStarted;
+
+        public static event Action OnGameEnd;
 
         float m_TimeLoadEndGameScene;
         string m_SceneToLoad;
 
         static float timeBefore = 0f;
         private float timer;
+
         static float totalTime = 0f;
         static int deathCount;
 
-        
+
         void Awake()
         {
             EventManager.AddListener<AllObjectivesCompletedEvent>(OnAllObjectivesCompleted);
             EventManager.AddListener<PlayerDeathEvent>(OnPlayerDeath);
+
             GameIsEnding = false;
+            PlayerIsDead = false;
         }
 
         void Start()
         {
-            // Try to find the maskPanel in the current scene
-            GameObject panel = GameObject.Find("Panel");
+            AudioUtility.SetMasterVolume(1);
 
-            if (panel == null)
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            
+            if (currentSceneName == "ModeB")    // The basic mode, no panel
             {
-                AudioUtility.SetMasterVolume(1);
-                // If the maskPanel is not found, start the game
                 gameStarted = true;
+                
+            }
+            else
+            {
+                if (deathCount == 0)            // Tutorial or ModeA or ModeC, only pause the game before start
+                {
+                    gameStarted = false;
+                    AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
+                    foreach (AudioSource audio in allAudioSources)
+                    {
+                        audio.volume = 0;
+                    }
+                }
+                else
+                    gameStarted = true;
             }
         }
+
+
+        public void NotifyGameStart()
+        { 
+            gameStarted = true;
+          //Debug.Log("Game has started!");
+            AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
+            foreach (AudioSource audio in allAudioSources)
+            {
+                audio.volume = 1;
+            }
+        }
+
 
         void Update()
         {
@@ -78,7 +113,9 @@ namespace Unity.FPS.Game
             {
                 if (GameIsEnding)
                 {
-                    OnGameSessionEnd?.Invoke();
+                    OnGameEnd?.Invoke();
+
+                    ResetDeathCount();
 
                     float timeRatio = 1 - (m_TimeLoadEndGameScene - Time.time) / EndSceneLoadDelay;
                     EndGameFadeCanvasGroup.alpha = timeRatio;
@@ -118,11 +155,18 @@ namespace Unity.FPS.Game
             return deathCount;
         }
 
+        public static void ResetDeathCount()
+        {
+            deathCount = 0;
+        }
+
         void OnAllObjectivesCompleted(AllObjectivesCompletedEvent evt) => EndGame(true, false);
         void OnPlayerDeath(PlayerDeathEvent evt) => EndGame(false, false);
 
         void EndGame(bool win, bool timeOut)
-        {  
+        {
+            GameIsEnding = true;
+
             EndGameFadeCanvasGroup.gameObject.SetActive(true);
             m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay + (win ? DelayBeforeFadeToBlack : 0);
 
@@ -132,7 +176,6 @@ namespace Unity.FPS.Game
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
 
-                GameIsEnding = true;
                 // Remember that we need to load the appropriate end scene after a delay
                 m_SceneToLoad = win ? WinSceneName : LoseSceneName;
                 m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay + (win ? DelayBeforeFadeToBlack : 0);
@@ -155,9 +198,12 @@ namespace Unity.FPS.Game
             else
             {
                 timeBefore += timer;
+
+                PlayerIsDead = true;
                 deathCount++;
-                GameIsEnding = true;
+
                 m_SceneToLoad = SceneManager.GetActiveScene().name;
+                
                 m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay;
 
                 DisplayMessageEvent displayMessage = Events.DisplayMessageEvent;

@@ -39,10 +39,10 @@ namespace Unity.FPS.UI
         {
             if (gameFlowManager.gameStarted)
             {
-                float timerValue = gameFlowManager.GetTimer();
+                float timerValue = gameFlowManager.GetTimer() + 1;
                 int minutes = Mathf.FloorToInt(timerValue / 60F);
                 int seconds = Mathf.FloorToInt(timerValue - minutes * 60);
-                timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+                timerText.text = string.Format("{0:00}:{1:00}", Mathf.Max(0, minutes), Mathf.Max(0, seconds));
             }
         }
 

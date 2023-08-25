@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,8 +23,6 @@ public class HeartRateService : MonoBehaviour
     private const string HeartRateDeviceName = "Polar H10";
     private const string HeartRateServiceID = "180D";
     private const string HeartRateCharacteristicID = "2A37";
-
-    public List<int> heartRateData = new List<int>();
 
     public delegate void ConnectionHandler();
     public event ConnectionHandler OnConnected;
@@ -133,7 +132,6 @@ public class HeartRateService : MonoBehaviour
                 heartBeatsPerMinute = (int)res.buf[1];
                 heartRateAverage = (float)(totalHeartRate / (heartRateSamples * 1.0));
 
-                heartRateData.Add(heartBeatsPerMinute);
                 //bpm.text = $"Heart Rate: {res.buf[1].ToString()}, Average: {(float)(totalHeartRate / heartRateSamples)}";
             }
         }

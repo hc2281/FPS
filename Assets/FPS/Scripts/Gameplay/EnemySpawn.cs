@@ -5,7 +5,6 @@ namespace Unity.FPS.Gameplay
 {
     public class EnemySpawn : MonoBehaviour
     {
-        public DifficultyController difficultyController;
         public GameObject enemyPrefab; // Assign your enemy prefab here
         public float xMin;
         public float xMax;
@@ -35,7 +34,8 @@ namespace Unity.FPS.Gameplay
             int i = 0;
             while (true) // Infinite loop, but we'll break out of it once we've spawned enough enemies
             {
-                switch (difficultyController.DifficultyLevel)
+                string currentDifficulty = DifficultyController.Instance.DifficultyLevel;
+                switch (currentDifficulty)
                 {
                     case "easy":
                         EnemyCount = 5;

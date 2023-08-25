@@ -242,7 +242,7 @@ namespace Unity.FPS.AI
         void OnDetectedTarget()
         {
             onDetectedTarget.Invoke();
-
+            AttackEyeColor = DifficultyController.Instance.GetAttackEyeColor();
             // Set the eye default color and property block if the eye renderer is set
             if (m_EyeRendererData.Renderer != null)
             {

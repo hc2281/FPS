@@ -7,15 +7,14 @@ using Unity.FPS.Gameplay;
 
 public class LoserData : MonoBehaviour
 {
-    public TextMeshProUGUI killsText;
-    public TextMeshProUGUI deathText;
+    public TextMeshProUGUI resultText;
 
     void Start()
     {
-        int kills = ObjectiveKillEnemies.m_KillTotal;
-        killsText.text = "Kills: " + kills.ToString();
-
-        int deaths = GameFlowManager.GetDeathCount();
-        deathText.text = "Deaths: " + deaths.ToString();
+        //int kills = ObjectiveKillEnemies.m_KillTotal;
+        //int deaths = DataCollector.DeathCount;
+        //int averageKill = kills / deaths;
+        //resultText.text = "Average Kills: " + averageKill.ToString() + "   Deaths: " + deaths.ToString();
     }
+
 }

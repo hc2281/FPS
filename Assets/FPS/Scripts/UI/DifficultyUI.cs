@@ -10,7 +10,7 @@ public class DifficultyUI : MonoBehaviour
     {
         if (heartRateDDA.startCalculated)
         {
-            difficultyText.text = $"{heartRateDDA.difficultyindex}";
+            difficultyText.text = $"{heartRateDDA.Difficultyindex}";
         }
         
     }

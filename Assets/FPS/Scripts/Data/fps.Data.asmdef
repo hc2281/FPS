@@ -1,0 +1,17 @@
+{
+    "name": "fps.Difficulty",
+    "rootNamespace": "",
+    "references": [
+        "GUID:dc9484ab58e451641b891f1fb53f4e02",
+        "GUID:9c5543eabb73a6249ac07b2c065ee8b4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -7,18 +7,15 @@ using Unity.FPS.Gameplay;
 
 public class WinnerData : MonoBehaviour
 {
-    public TextMeshProUGUI killsText;
-    public TextMeshProUGUI timeText;
-    private float timeTaken;
+    public TextMeshProUGUI resultText;
 
     void Start()
     {
-        int kills = ObjectiveKillEnemies.m_KillTotal;
-        killsText.text = "Kills: " + kills.ToString();
+        //int kills = ObjectiveKillEnemies.m_KillTotal;
 
-        timeTaken = GameFlowManager.GetTotalTime();
+        float timeTaken = GameFlowManager.GetTotalTime() + 1;
         int minutes = Mathf.FloorToInt(timeTaken / 60);
         int seconds = Mathf.FloorToInt(timeTaken % 60);
-        timeText.text = "Time Taken: " + string.Format("{0:00}:{1:00}", minutes, seconds);
+        resultText.text = "Time Taken: " + string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

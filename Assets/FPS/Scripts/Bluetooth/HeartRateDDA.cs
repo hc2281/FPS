@@ -7,15 +7,28 @@ public class HeartRateDDA : MonoBehaviour
     public bool startCalculated = false;
 
     // Parameters to control the dynamic difficulty adjustment
-    public float DeadZoneFactor = 0.2f; // Example value, adjust as needed
-    public float ScopePercentage = 0.2f; // Example value, adjust as needed
+    public float DeadZoneFactor = 0.2f; 
+    public float ScopePercentage = 0.2f; 
+
+    public delegate void DifficultyChangedHandler(string newDifficulty);
+    public event DifficultyChangedHandler OnDifficultyChanged;
     
-    public float difficultyindex { get; private set; } // The computed difficulty level
-    public string difficultyLevel { get; private set; } // The computed difficulty level
+    public float Difficultyindex { get; private set; }
+
+    private string difficultyLevel; // The computed difficulty level
+    public string DifficultyLevel
+    {
+        get { return difficultyLevel; }
+        set
+        {
+            difficultyLevel = value;
+            OnDifficultyChanged?.Invoke(difficultyLevel); //Once change, inform DifficultyController
+        }
+    } 
 
     void Update()
     {
-        if (HeartRateManager.instance.isCalculated)
+        if (HeartRateManager.instance.isCalculated && heartRateService.isSubscribed)
         {
             startCalculated = true;
             CalculateDifficulty();
@@ -39,14 +52,14 @@ public class HeartRateDDA : MonoBehaviour
         float HeartRateMax = (1f + ScopePercentage) * HeartRateMedian;
 
         // Compute difficulty level, ranging from 0 to 1
-        difficultyindex = Mathf.Clamp((HeartRateMax - HeartRate) / (HeartRateMax - HeartRateMin), 0f, 1f);
-        difficultyindex = Mathf.Round(difficultyindex * 100f) / 100f;
+        Difficultyindex = Mathf.Clamp((HeartRateMax - HeartRate) / (HeartRateMax - HeartRateMin), 0f, 1f);
+        Difficultyindex = Mathf.Round(Difficultyindex * 100f) / 100f;
 
-        if (difficultyindex < 1f / 3f)
+        if (Difficultyindex < 1f / 3f)
         {
             difficultyLevel = "easy";
         }
-        else if (difficultyindex < 2f / 3f)
+        else if (Difficultyindex < 2f / 3f)
         {
             difficultyLevel = "medium";
         }

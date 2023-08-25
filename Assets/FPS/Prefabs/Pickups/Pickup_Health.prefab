@@ -83,7 +83,10 @@ MonoBehaviour:
   PickupSfx: {fileID: 8300000, guid: 8dfdbc346713580429db9079ad1ff964, type: 3}
   PickupVfxPrefab: {fileID: 18133231791472539, guid: e44fc97440f45e946a0bdbdd460acfb9,
     type: 3}
-  HealAmount: 40
+  HealAmount: 25
+  HealthPickupRenderer: {fileID: 5649880935820430217}
+  GreenMaterial: {fileID: 2100000, guid: 6ac9e0b6cc5098449b46a4a161b3d6c5, type: 2}
+  RedMaterial: {fileID: 2100000, guid: 01fe8b39f37d8b5418cc15f038efbed5, type: 2}
 --- !u!114 &6275561476046798665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4894,7 +4897,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: a0798aa25b2a35247b262820a588a364, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9907,6 +9909,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 42997a46d4ce7ac48a673a5ae3d8ae68, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93b1ab0ae86bdf7459bbdf258c9dec49, type: 3}
+--- !u!23 &5649880935820430217 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: 93b1ab0ae86bdf7459bbdf258c9dec49,
+    type: 3}
+  m_PrefabInstance: {fileID: 5649880935822726121}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5649880935822330217 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 93b1ab0ae86bdf7459bbdf258c9dec49,

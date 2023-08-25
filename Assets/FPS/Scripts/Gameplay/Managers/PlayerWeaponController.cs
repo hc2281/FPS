@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Unity.FPS.Gameplay
@@ -8,8 +6,6 @@ namespace Unity.FPS.Gameplay
     {
         public PlayerWeaponsManager firstWeaponManager;
         public PlayerWeaponsManager secondWeaponManager;
-        public AudioClip dualGunsEquipSound;
-        private AudioSource audioSource;
         public enum WeaponState
         {
             SingleGun,
@@ -17,14 +13,9 @@ namespace Unity.FPS.Gameplay
         }
         public WeaponState currentWeaponState;
         public DifficultyController difficultyController;
+
         void Start()
         {
-            audioSource = GetComponent<AudioSource>();
-            if (audioSource == null)
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-            }
-
             SetWeaponState(WeaponState.SingleGun);
         }
 
@@ -33,6 +24,7 @@ namespace Unity.FPS.Gameplay
         {
             if (difficultyController.DifficultyLevel == "easy")
             {
+                
                 SetWeaponState(WeaponState.DualGuns);
             }
             else
@@ -54,12 +46,8 @@ namespace Unity.FPS.Gameplay
                 case WeaponState.DualGuns:
                     firstWeaponManager.enabled = true; 
                     secondWeaponManager.enabled = true;
-                    
-                    // Player the audio
-                    if (dualGunsEquipSound != null && audioSource != null)
-                    {
-                        audioSource.PlayOneShot(dualGunsEquipSound);
-                    }
+                    firstWeaponManager.AimingWeaponPosition = firstWeaponManager.DefaultWeaponPosition;
+
                     break;
             }
         }

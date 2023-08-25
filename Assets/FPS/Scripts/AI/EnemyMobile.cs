@@ -56,11 +56,26 @@ namespace Unity.FPS.AI
             m_AudioSource = GetComponent<AudioSource>();
             DebugUtility.HandleErrorIfNullGetComponent<AudioSource, EnemyMobile>(m_AudioSource, this, gameObject);
             m_AudioSource.clip = MovementSound;
+
             m_AudioSource.Play();
         }
 
         void Update()
         {
+            string currentDifficulty = DifficultyController.Instance.DifficultyLevel;
+            switch (currentDifficulty)
+            {
+                case "easy":
+                    m_EnemyController.NavMeshAgent.speed *= 0.8f;
+                    break;
+                case "medium":
+                    m_EnemyController.NavMeshAgent.speed *= 1f;
+                    break;
+                case "hard":
+                    m_EnemyController.NavMeshAgent.speed *= 1.2f;
+                    break;
+            }
+
             UpdateAiStateTransitions();
             UpdateCurrentAiState();
 

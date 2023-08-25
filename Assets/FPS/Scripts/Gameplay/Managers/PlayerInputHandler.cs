@@ -20,30 +20,28 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Used to flip the horizontal input axis")]
         public bool InvertXAxis = false;
 
-        public GameFlowManager gameFlowManager;
-
         GameFlowManager m_GameFlowManager;
         PlayerCharacterController m_PlayerCharacterController;
         bool m_FireInputWasHeld;
 
-        void Start()
+        void Awake()
         {
             m_PlayerCharacterController = GetComponent<PlayerCharacterController>();
-                DebugUtility.HandleErrorIfNullGetComponent<PlayerCharacterController, PlayerInputHandler>(m_PlayerCharacterController, this, gameObject);
+            DebugUtility.HandleErrorIfNullGetComponent<PlayerCharacterController, PlayerInputHandler>(
+                m_PlayerCharacterController, this, gameObject);
             m_GameFlowManager = FindObjectOfType<GameFlowManager>();
-                DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, PlayerInputHandler>(m_GameFlowManager, this);
-
-            if (gameFlowManager.gameStarted)
+            DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, PlayerInputHandler>(m_GameFlowManager, this);
+            if (m_GameFlowManager.gameStarted)
             {
-                
-                Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
-            else 
+            else
             {
-                Cursor.lockState = CursorLockMode.None; // Free the cursor
-                Cursor.visible = true; // Make the cursor visible
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
             }
+                
         }
 
         void LateUpdate()
@@ -53,7 +51,10 @@ namespace Unity.FPS.Gameplay
 
         public bool CanProcessInput()
         {
-            return Cursor.lockState == CursorLockMode.Locked && !m_GameFlowManager.GameIsEnding;
+            if (m_GameFlowManager.gameStarted)
+                return Cursor.lockState == CursorLockMode.Locked && !m_GameFlowManager.GameIsEnding;
+            else
+                return false;
         }
 
         public Vector3 GetMoveInput()
