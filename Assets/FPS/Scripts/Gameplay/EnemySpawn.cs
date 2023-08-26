@@ -38,13 +38,13 @@ namespace Unity.FPS.Gameplay
                 switch (currentDifficulty)
                 {
                     case "easy":
-                        EnemyCount = 5;
+                        EnemyCount = 3;
                         break;
                     case "medium":
-                        EnemyCount = 10;
+                        EnemyCount = 5;
                         break;
                     case "hard":
-                        EnemyCount = 20;
+                        EnemyCount = 10;
                         break;
                 }
 

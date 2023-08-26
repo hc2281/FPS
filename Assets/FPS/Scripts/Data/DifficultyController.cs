@@ -6,10 +6,6 @@ public class DifficultyController : MonoBehaviour
 
     public string DifficultyLevel { get; private set; }
 
-    public Color EasyEyeColor = Color.yellow;  // Example color for easy
-    public Color HardEyeColor = new Color(0.5f, 0f, 0.5f);    // Example color for hard
-    public Color NormalEyeColor = Color.red;  // Example color for normal
-
     private DifficultySelectHandler difficultySelectHandler;
 
     private void Awake()
@@ -33,11 +29,7 @@ public class DifficultyController : MonoBehaviour
         // Check the current scene name
         string sceneName = SceneManager.GetActiveScene().name;
 
-        if (sceneName == "ModeB")
-        {
-            DifficultyLevel = "medium"; // Set difficulty to medium for ModeB
-        }
-        else if (sceneName == "ModeA")
+        if (sceneName == "ModeA")
         {
             // Check if heartRateDDA script is attached to the object
             HeartRateDDA hrDDA = GetComponent<HeartRateDDA>();
@@ -49,16 +41,25 @@ public class DifficultyController : MonoBehaviour
                 if (DifficultyLevel == null)
                     DifficultyLevel = "medium";
                 hrDDA.OnDifficultyChanged += HandleDifficultyChanged;        // Now you can use DifficultyLevel in your script as needed
-                Debug.Log("Current difficulty: " + DifficultyLevel);
+                Debug.Log(sceneName + " Current difficulty: " + DifficultyLevel);
             }
+            else
+            {
+                Debug.Log("Cannot find Game object with HeartRateDDA.cs.");
+            }    
         }
-        else
+        else if (sceneName == "ModeC")
         {
             difficultySelectHandler = FindObjectOfType<DifficultySelectHandler>();
             if (difficultySelectHandler != null)
             {
                 difficultySelectHandler.OnDifficultySelected.AddListener(SetDifficulty);
             } 
+        }
+        else
+        {
+            DifficultyLevel = "medium"; // Set difficulty to medium for ModeB
+            Debug.Log(sceneName + " Current difficulty: " + DifficultyLevel);
         }
 
     }
@@ -85,20 +86,6 @@ public class DifficultyController : MonoBehaviour
         if (difficultySelectHandler != null)
         {
             difficultySelectHandler.OnDifficultySelected.RemoveListener(SetDifficulty);
-        }
-    }
-
-    public Color GetAttackEyeColor()
-    {
-        switch (DifficultyLevel)
-        {
-            case "easy":
-                return EasyEyeColor;
-            case "hard":
-                return HardEyeColor;
-            case "medium":
-            default:
-                return NormalEyeColor;
         }
     }
 

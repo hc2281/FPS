@@ -7,14 +7,26 @@ using Unity.FPS.Gameplay;
 
 public class LoserData : MonoBehaviour
 {
-    public TextMeshProUGUI resultText;
+    public TextMeshProUGUI deathsText;
+    public TextMeshProUGUI resultsText;
 
     void Start()
     {
         //int kills = ObjectiveKillEnemies.m_KillTotal;
-        //int deaths = DataCollector.DeathCount;
+        int deaths = GameFlowManager.GetDeathCount();
+        GameFlowManager.ResetDeathCount();
         //int averageKill = kills / deaths;
-        //resultText.text = "Average Kills: " + averageKill.ToString() + "   Deaths: " + deaths.ToString();
+        GameFlowManager.ResetTimer();
+        resultsText.text = "Deaths: " + deaths.ToString();
+
+        int i = 0;
+        foreach (int count in LogRecorder.enemyCountList)
+        {
+            resultsText.text = "Round " + i + " Kill Enemy:" + count.ToString();
+            i++;
+        }
+
+        LogRecorder.enemyCountList.Clear();
     }
 
 }

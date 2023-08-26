@@ -11,8 +11,6 @@ namespace Unity.FPS.UI
 
         private void Start()
         {
-            //gameFlowManager = GameObject.Find("GameManager").GetComponent<GameFlowManager>();
-            //timerText = GetComponent<TextMeshProUGUI>();
             GameObject managerObject = GameObject.Find("GameManager");
             if (managerObject == null)
             {
@@ -43,8 +41,13 @@ namespace Unity.FPS.UI
                 int minutes = Mathf.FloorToInt(timerValue / 60F);
                 int seconds = Mathf.FloorToInt(timerValue - minutes * 60);
                 timerText.text = string.Format("{0:00}:{1:00}", Mathf.Max(0, minutes), Mathf.Max(0, seconds));
+
+                // Check if timer reaches 00:00
+                if (gameFlowManager.SceneEnd)
+                {
+                    this.gameObject.SetActive(false); // Set the TimerUI to be invisible
+                }
             }
         }
-
     }
 }

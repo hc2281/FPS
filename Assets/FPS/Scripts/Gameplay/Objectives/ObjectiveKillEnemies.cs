@@ -38,7 +38,7 @@ namespace Unity.FPS.Gameplay
 
             m_KillTotal++;
 
-            DataCollector.SaveDeathCount(m_KillTotal);
+            LogRecorder.SaveEnemyCount(m_KillTotal);
 
             if (MustKillAllEnemies)
                 KillsToCompleteObjective = evt.RemainingEnemyCount + m_KillTotal;

@@ -1,8 +1,9 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using Unity.FPS.Game;
 using UnityEngine.SceneManagement;
+using Unity.FPS.Game;
+
 public class PanelController : MonoBehaviour
 {
 
@@ -31,22 +32,35 @@ public class PanelController : MonoBehaviour
             else
                 Debug.Log("Not find DifficultySelectHandler.");
         }
-    }
+        int death = GameFlowManager.GetDeathCount();
+        Debug.Log("Current Death Count:" + death);
 
-    protected void Start()
-    {
-        int deaths = GameFlowManager.GetDeathCount();
-        if (deaths == 0)
+        if (death == 0)
         {
-            ShowLoadingUI(); // Only show the panel before the game
+            ShowLoadingUI(); // Only show the panel before the game    
         }
         else
         {
             maskPanel.SetActive(false);
             loadingText.gameObject.SetActive(false);
         }
-            
     }
+
+    //protected void Start()
+    //{
+    //    int death = GameFlowManager.GetDeathCount();
+    //    Debug.Log("Current Death Count:" + death);
+    //    if (death == 0)
+    //    {
+    //        ShowLoadingUI(); // Only show the panel before the game    
+    //    }
+    //    else
+    //    {
+    //        maskPanel.SetActive(false);
+    //        loadingText.gameObject.SetActive(false);
+    //    }
+             
+    //}
 
     public void ShowLoadingUI()
     {
@@ -57,7 +71,6 @@ public class PanelController : MonoBehaviour
             StartCoroutine(AnimateDots());
         }
         
-
     }
 
     IEnumerator AnimateDots()

@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System; // Needed for the Action delegate
 
 public class HeartRateManager : MonoBehaviour
 {
     public static HeartRateManager instance;
     public float baseBPM;
-    public bool isCalculated = false;
+    public event Action<float> OnBaseBPMCalculated;
 
     private void Awake()
     {
@@ -24,6 +23,6 @@ public class HeartRateManager : MonoBehaviour
     public void SetAverageBPM(float bpm)
     {
         baseBPM = bpm;
-        isCalculated = true;
+        OnBaseBPMCalculated?.Invoke(baseBPM);
     }
 }

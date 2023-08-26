@@ -60,6 +60,7 @@ public class BaselineManager : MonoBehaviour
 
         private void EndMeasure()
         {
+            Text.text = "";
             MeasuredText.color = Color.black;
             MeasuredText.text = "Measured";
             heartRateSum = 0f;

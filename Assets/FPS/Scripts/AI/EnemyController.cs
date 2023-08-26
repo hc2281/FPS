@@ -242,7 +242,6 @@ namespace Unity.FPS.AI
         void OnDetectedTarget()
         {
             onDetectedTarget.Invoke();
-            AttackEyeColor = DifficultyController.Instance.GetAttackEyeColor();
             // Set the eye default color and property block if the eye renderer is set
             if (m_EyeRendererData.Renderer != null)
             {
@@ -433,6 +432,16 @@ namespace Unity.FPS.AI
 
         public bool TryDropItem()
         {
+            string currentDifficulty = DifficultyController.Instance.DifficultyLevel;
+            if (currentDifficulty == "hard")
+            {
+                DropRate = 0.8f;
+            }
+            else
+            {
+                DropRate = 1f;
+            }
+
             if (DropRate == 0 || LootPrefab == null)
                 return false;
             else if (DropRate == 1)

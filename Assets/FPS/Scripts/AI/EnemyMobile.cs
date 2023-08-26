@@ -72,7 +72,7 @@ namespace Unity.FPS.AI
                     m_EnemyController.NavMeshAgent.speed *= 1f;
                     break;
                 case "hard":
-                    m_EnemyController.NavMeshAgent.speed *= 1.2f;
+                    m_EnemyController.NavMeshAgent.speed *= 2f;
                     break;
             }
 

@@ -41,16 +41,15 @@ namespace Unity.FPS.Game
         public float TimeLimit = 300;
         public bool GameIsEnding { get; private set; }
         public bool gameStarted;
-        public bool PlayerIsDead { get; private set; }
+        public static bool PlayerRestart = false;
+        public bool SceneEnd { get; private set; }
+        private bool isTutorial;
 
-        //public delegate void GameStartEventHandler(bool started);
-        //public event GameStartEventHandler OnGameStarted;
-
-        public static event Action OnGameEnd;
+        private string currentSceneName;
 
         float m_TimeLoadEndGameScene;
         string m_SceneToLoad;
-
+        
         static float timeBefore = 0f;
         private float timer;
 
@@ -64,23 +63,33 @@ namespace Unity.FPS.Game
             EventManager.AddListener<PlayerDeathEvent>(OnPlayerDeath);
 
             GameIsEnding = false;
-            PlayerIsDead = false;
+            SceneEnd = false;
+            currentSceneName = SceneManager.GetActiveScene().name;
+            
+            if (currentSceneName == "Tutorial")
+            {
+                isTutorial = true;
+            }
+            else
+            {
+                isTutorial = false;
+            }
         }
 
         void Start()
         {
             AudioUtility.SetMasterVolume(1);
 
-            string currentSceneName = SceneManager.GetActiveScene().name;
             
             if (currentSceneName == "ModeB")    // The basic mode, no panel
             {
+                
                 gameStarted = true;
                 
             }
             else
             {
-                if (deathCount == 0)            // Tutorial or ModeA or ModeC, only pause the game before start
+                if (PlayerRestart == false)            // Tutorial or ModeA or ModeC, only pause the game before start
                 {
                     gameStarted = false;
                     AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
@@ -113,10 +122,6 @@ namespace Unity.FPS.Game
             {
                 if (GameIsEnding)
                 {
-                    OnGameEnd?.Invoke();
-
-                    ResetDeathCount();
-
                     float timeRatio = 1 - (m_TimeLoadEndGameScene - Time.time) / EndSceneLoadDelay;
                     EndGameFadeCanvasGroup.alpha = timeRatio;
 
@@ -160,6 +165,12 @@ namespace Unity.FPS.Game
             deathCount = 0;
         }
 
+        public static void ResetTimer()
+        {
+            totalTime = 0;
+            timeBefore = 0;
+        }
+
         void OnAllObjectivesCompleted(AllObjectivesCompletedEvent evt) => EndGame(true, false);
         void OnPlayerDeath(PlayerDeathEvent evt) => EndGame(false, false);
 
@@ -170,8 +181,10 @@ namespace Unity.FPS.Game
             EndGameFadeCanvasGroup.gameObject.SetActive(true);
             m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay + (win ? DelayBeforeFadeToBlack : 0);
 
-            if (win || timeOut)
+            if (win || timeOut || isTutorial)
             {
+                SceneEnd = true;
+
                 // unlocks the cursor before leaving the scene, to be able to click buttons
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -179,7 +192,7 @@ namespace Unity.FPS.Game
                 // Remember that we need to load the appropriate end scene after a delay
                 m_SceneToLoad = win ? WinSceneName : LoseSceneName;
                 m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay + (win ? DelayBeforeFadeToBlack : 0);
-
+                
                 if (win)
                 {
                     // play a sound on win
@@ -194,12 +207,15 @@ namespace Unity.FPS.Game
                     displayMessage.DelayBeforeDisplay = DelayBeforeWinMessage;
                     EventManager.Broadcast(displayMessage);
                 }
+                
+                
             }
             else
             {
                 timeBefore += timer;
-
-                PlayerIsDead = true;
+                
+                PlayerRestart = true;
+                
                 deathCount++;
 
                 m_SceneToLoad = SceneManager.GetActiveScene().name;

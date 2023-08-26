@@ -131,10 +131,10 @@ public class HeartRateService : MonoBehaviour
 
                 heartBeatsPerMinute = (int)res.buf[1];
                 heartRateAverage = (float)(totalHeartRate / (heartRateSamples * 1.0));
-
                 //bpm.text = $"Heart Rate: {res.buf[1].ToString()}, Average: {(float)(totalHeartRate / heartRateSamples)}";
             }
         }
+
         {
             // log potential errors
             HeartRateAPI.ErrorMessage res = new HeartRateAPI.ErrorMessage();
@@ -155,7 +155,7 @@ public class HeartRateService : MonoBehaviour
             // start new scan
             HeartRateAPI.StartDeviceScan();
             isScanningDevices = true;
-	    startScan = false;
+            startScan = false;
         }
         else
         {

@@ -81,13 +81,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage:
     Min: 15
-    Max: 15
+    Max: 20
   Radius:
     Min: 0.5
-    Max: 0.5
+    Max: 1
   Speed:
     Min: 120
-    Max: 120
+    Max: 150
   GravityDownAcceleration:
     Min: 0
     Max: 0

@@ -7,9 +7,6 @@ namespace Unity.FPS.Gameplay
     {
         [Header("Parameters")] [Tooltip("Amount of health to heal on pickup")]
         private int HealAmount;
-        public MeshRenderer HealthPickupRenderer;
-        public Material GreenMaterial;
-        public Material RedMaterial;
         protected override void OnPicked(PlayerCharacterController player)
         {
             Health playerHealth = player.GetComponent<Health>();
@@ -20,14 +17,12 @@ namespace Unity.FPS.Gameplay
                 {
                     case "easy":
                         HealAmount = 30;
-                        HealthPickupRenderer.material = RedMaterial;
                         break;
                     case "medium":
-                        HealAmount = 20;
+                        HealAmount = 25;
                         break;
                     case "hard":
-                        HealthPickupRenderer.material = GreenMaterial;
-                        HealAmount = 10;
+                        HealAmount = 20;
                         break;
                 }
                 playerHealth.Heal(HealAmount);
