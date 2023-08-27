@@ -12,7 +12,7 @@ namespace Unity.FPS.Gameplay
             Health playerHealth = player.GetComponent<Health>();
             if (playerHealth && playerHealth.CanPickup())
             {
-                string currentDifficulty = DifficultyController.Instance.DifficultyLevel;
+                string currentDifficulty = DifficultyController.DifficultyLevel;
                 switch (currentDifficulty)
                 {
                     case "easy":

@@ -81,7 +81,7 @@ namespace Unity.FPS.Game
             AudioUtility.SetMasterVolume(1);
 
             
-            if (currentSceneName == "ModeB")    // The basic mode, no panel
+            if (currentSceneName == "ModeB" || currentSceneName == "Tutorial")    // The basic mode, no panel
             {
                 
                 gameStarted = true;

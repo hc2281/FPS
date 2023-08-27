@@ -19,14 +19,13 @@ public class LoserData : MonoBehaviour
         GameFlowManager.ResetTimer();
         resultsText.text = "Deaths: " + deaths.ToString();
 
-        int i = 0;
-        foreach (int count in LogRecorder.enemyCountList)
+        int i = deaths;
+        while (LogRecorder.enemyCountList.Count > 0)
         {
-            resultsText.text = "Round " + i + " Kill Enemy:" + count.ToString();
-            i++;
+            int count = LogRecorder.enemyCountList.Pop();
+            resultsText.text += "Round " + i + " Kill Enemy:" + count.ToString() + "\n"; // Append the information
+            i--;
         }
-
-        LogRecorder.enemyCountList.Clear();
     }
 
 }

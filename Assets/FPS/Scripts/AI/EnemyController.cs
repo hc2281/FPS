@@ -432,7 +432,7 @@ namespace Unity.FPS.AI
 
         public bool TryDropItem()
         {
-            string currentDifficulty = DifficultyController.Instance.DifficultyLevel;
+            string currentDifficulty = DifficultyController.DifficultyLevel;
             if (currentDifficulty == "hard")
             {
                 DropRate = 0.8f;

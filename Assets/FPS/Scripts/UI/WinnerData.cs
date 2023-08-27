@@ -19,14 +19,13 @@ public class WinnerData : MonoBehaviour
         int seconds = Mathf.FloorToInt(timeTaken % 60);
         TimeText.text = "Time Taken: " + string.Format("{0:00}:{1:00}", minutes, seconds) + " Death:" + deaths.ToString();
 
-        int i = 0;
-        foreach (int count in LogRecorder.enemyCountList)
+        int i = deaths;
+        while (LogRecorder.enemyCountList.Count > 0)
         {
-            resultsText.text = "Round " + i + " Kill Enemy:" + count.ToString();
-            i++;
+            int count = LogRecorder.enemyCountList.Pop();
+            resultsText.text += "Round " + i + " Kill Enemy:" + count.ToString() + "\n"; // Append the information
+            i--;
         }
-
-        LogRecorder.enemyCountList.Clear();
 
     }
 }

@@ -34,7 +34,7 @@ namespace Unity.FPS.Gameplay
             int i = 0;
             while (true) // Infinite loop, but we'll break out of it once we've spawned enough enemies
             {
-                string currentDifficulty = DifficultyController.Instance.DifficultyLevel;
+                string currentDifficulty = DifficultyController.DifficultyLevel;
                 switch (currentDifficulty)
                 {
                     case "easy":

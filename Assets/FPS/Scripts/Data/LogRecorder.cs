@@ -14,22 +14,29 @@ public class LogRecorder : MonoBehaviour
     public static void SaveEnemyCount(int enemyCount)
     {
         int LastCount = KilledEnemy;
+        Debug.Log("Current Killed Enemy Count:" + KilledEnemy);
         if (enemyCount > LastCount)
         {
+            if (enemyCountList.Count != 0)
+            {
+                enemyCountList.Pop();
+            }
+            enemyCountList.Push(enemyCount);
             KilledEnemy = enemyCount;
             Debug.Log("Current Killed Enemy Count:" + KilledEnemy);
         }
         else if (enemyCount <= LastCount)
         {
-            enemyCountList.Push(LastCount);  // Push the highest count of the previous sequence
-            KilledEnemy = enemyCount;        // Reset KilledEnemy for the new sequence
+            enemyCountList.Push(enemyCount); 
+            KilledEnemy = enemyCount;
         }
     }
                                                                             
     private void Start()
     {
         string sceneName = SceneManager.GetActiveScene().name;
-        logFileName = sceneName + "_debug_log.txt";
+        string dateTimeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        logFileName = sceneName + "_debug_log_{dateTimeString}.txt";
         string logsFolderPath = Path.Combine(Application.dataPath, "logs");
         if (!Directory.Exists(logsFolderPath))
         {

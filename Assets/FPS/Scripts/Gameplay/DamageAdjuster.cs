@@ -19,7 +19,7 @@ public class DamageAdjuster : MonoBehaviour
         ProjectileStandard proj = GetComponent<ProjectileStandard>();
         if (proj)
         {
-            string Difficulty = DifficultyController.Instance.DifficultyLevel;
+            string Difficulty = DifficultyController.DifficultyLevel;
             if (Difficulty == "hard")
             {
 

@@ -1,27 +1,24 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using Unity.FPS.Bluetooth;
 
 namespace Unity.FPS.UI
 {
 public class BaselineManager : MonoBehaviour
 {
-        public TMP_Text Text; // Show "Measured" to inform the player
-        public TMP_Text MeasuredText;
-        public HeartRateService heartRateService;
 
         public float baselineValue;
         public PanelController panel;
 
-        public bool isConnected = false;
         private float heartRateSum = 0f;
         private int heartRateCount = 0;
 
-        private bool isMeasuring = false;  // Flag to track if we're currently measuring
+        public bool isMeasuring = false;  // Flag to track if we're currently measuring
 
         private void Start()
         {
-            heartRateService.OnConnected += StartHeartRateMeasurement;
+            StartHeartRateMeasurement();
         }
 
         public void StartHeartRateMeasurement()
@@ -29,9 +26,6 @@ public class BaselineManager : MonoBehaviour
             if (isMeasuring)  // Check if we're already measuring
                 return;
 
-            isConnected = true;
-            Text.text = "Connected";
-            Text.color = Color.white;
             StartCoroutine(MeasureHeartRateForOneMinute());
         }
 
@@ -42,7 +36,7 @@ public class BaselineManager : MonoBehaviour
 
             for (int i = 0; i < 120; i++)
             {
-                int currentHeartRate = GetCurrentHeartRate();
+                int currentHeartRate = HeartRateService.heartBeatsPerMinute;
                 heartRateSum += currentHeartRate;
                 heartRateCount++;
 
@@ -51,7 +45,7 @@ public class BaselineManager : MonoBehaviour
 
             baselineValue = heartRateSum / heartRateCount;
             Debug.Log("Base BPM: " + baselineValue);
-            HeartRateManager.instance.SetAverageBPM(baselineValue);
+            HeartRateDDA.SaveBaseBPM(baselineValue);
 
             EndMeasure();
 
@@ -60,25 +54,10 @@ public class BaselineManager : MonoBehaviour
 
         private void EndMeasure()
         {
-            Text.text = "";
-            MeasuredText.color = Color.black;
-            MeasuredText.text = "Measured";
             heartRateSum = 0f;
             heartRateCount = 0;
 
             panel.HideLoadingUI();
-        }
-
-        private int GetCurrentHeartRate()
-        {
-            int HeartRate = heartRateService.heartBeatsPerMinute;
-
-            return HeartRate;
-        }
-
-        private void OnDestroy()
-        {
-            heartRateService.OnConnected -= StartHeartRateMeasurement;
         }
 
     }

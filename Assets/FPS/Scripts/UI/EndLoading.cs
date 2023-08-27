@@ -7,12 +7,12 @@ public class EndLoading : MonoBehaviour
 
     void Start()
     {
-        heartRateService.OnConnected += panel.HideLoadingUI;
+        //heartRateService.OnConnected += panel.HideLoadingUI;
     }
 
     private void OnDestroy()
     {
-        heartRateService.OnConnected -= panel.HideLoadingUI;
+        //heartRateService.OnConnected -= panel.HideLoadingUI;
     }
 
 }

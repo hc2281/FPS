@@ -365,6 +365,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 5b2687ed4e9fddd4ab750c59e9c4174b, type: 3}
     - target: {fileID: 9087143436424816424, guid: 15258371177e93745ad14ae7369a24cb,
         type: 3}
+      propertyPath: LootPrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 15258371177e93745ad14ae7369a24cb,
+        type: 3}
       propertyPath: SwapToNextWeapon
       value: 1
       objectReference: {fileID: 0}

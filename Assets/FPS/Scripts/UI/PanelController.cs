@@ -24,6 +24,8 @@ public class PanelController : MonoBehaviour
         string sceneName = SceneManager.GetActiveScene().name;
         if (sceneName == "ModeC")
         {
+            ShowLoadingUI();
+
             difficultySelectHandler = FindObjectOfType<DifficultySelectHandler>();
             if (difficultySelectHandler != null)
             {
@@ -32,44 +34,26 @@ public class PanelController : MonoBehaviour
             else
                 Debug.Log("Not find DifficultySelectHandler.");
         }
-        int death = GameFlowManager.GetDeathCount();
-        Debug.Log("Current Death Count:" + death);
-
-        if (death == 0)
-        {
-            ShowLoadingUI(); // Only show the panel before the game    
-        }
         else
         {
-            maskPanel.SetActive(false);
-            loadingText.gameObject.SetActive(false);
+            int death = GameFlowManager.GetDeathCount();
+            Debug.Log("Current Death Count:" + death);
+            if (death == 0)
+                ShowLoadingUI(); // Only show the panel before the game    
+            else
+            {
+                maskPanel.SetActive(false);
+                loadingText.gameObject.SetActive(false);
+            }
         }
     }
-
-    //protected void Start()
-    //{
-    //    int death = GameFlowManager.GetDeathCount();
-    //    Debug.Log("Current Death Count:" + death);
-    //    if (death == 0)
-    //    {
-    //        ShowLoadingUI(); // Only show the panel before the game    
-    //    }
-    //    else
-    //    {
-    //        maskPanel.SetActive(false);
-    //        loadingText.gameObject.SetActive(false);
-    //    }
-             
-    //}
 
     public void ShowLoadingUI()
     {
         maskPanel.SetActive(true);
         loadingText.gameObject.SetActive(true);
         if (string.IsNullOrEmpty(loadingText.text))
-        {
             StartCoroutine(AnimateDots());
-        }
         
     }
 

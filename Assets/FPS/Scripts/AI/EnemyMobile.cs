@@ -62,7 +62,7 @@ namespace Unity.FPS.AI
 
         void Update()
         {
-            string currentDifficulty = DifficultyController.Instance.DifficultyLevel;
+            string currentDifficulty = DifficultyController.DifficultyLevel;
             switch (currentDifficulty)
             {
                 case "easy":

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Unity.FPS.Bluetooth;
 
 namespace Unity.FPS.Gameplay
 {
@@ -6,25 +7,21 @@ namespace Unity.FPS.Gameplay
     {
         public PlayerWeaponsManager firstWeaponManager;
         public PlayerWeaponsManager secondWeaponManager;
+
+        private string difficulty;
         public enum WeaponState
         {
             SingleGun,
             DualGuns
         }
         public WeaponState currentWeaponState;
-        public DifficultyController difficultyController;
 
-        void Start()
-        {
-            SetWeaponState(WeaponState.SingleGun);
-        }
-
-        // Update is called once per frame
         void Update()
         {
-            if (difficultyController.DifficultyLevel == "easy")
+            difficulty = DifficultyController.DifficultyLevel;
+            if (difficulty == "easy")
             {
-                
+
                 SetWeaponState(WeaponState.DualGuns);
             }
             else
@@ -32,6 +29,36 @@ namespace Unity.FPS.Gameplay
                 SetWeaponState(WeaponState.SingleGun);
             }
         }
+
+        //private void OnEnable()
+        //{
+        //    HeartRateDDA heartRateInstance = FindObjectOfType<HeartRateDDA>();
+        //    if (heartRateInstance != null)
+        //    {
+        //        heartRateInstance.OnDifficultyChanged += HandleDifficultyChanged;
+        //    }
+        //}
+
+        //private void OnDisable()
+        //{
+        //    HeartRateDDA heartRateInstance = FindObjectOfType<HeartRateDDA>();
+        //    if (heartRateInstance != null)
+        //    {
+        //        heartRateInstance.OnDifficultyChanged -= HandleDifficultyChanged;
+        //    }
+        //}
+
+        //private void HandleDifficultyChanged(string difficulty)
+        //{
+        //    if (difficulty == "easy")
+        //    {
+        //        SetWeaponState(WeaponState.DualGuns);
+        //    }
+        //    else
+        //    {
+        //        SetWeaponState(WeaponState.SingleGun);
+        //    }
+        //}
 
         public void SetWeaponState(WeaponState state)
         {
@@ -47,7 +74,6 @@ namespace Unity.FPS.Gameplay
                     firstWeaponManager.enabled = true; 
                     secondWeaponManager.enabled = true;
                     firstWeaponManager.AimingWeaponPosition = firstWeaponManager.DefaultWeaponPosition;
-
                     break;
             }
         }

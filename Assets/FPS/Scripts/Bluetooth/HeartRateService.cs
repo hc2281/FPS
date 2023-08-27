@@ -10,13 +10,12 @@ public class HeartRateService : MonoBehaviour
     public bool isScanningCharacteristics = false;
     public bool isSubscribed = false;
     public bool startScan = true;
-
     public string selectedDeviceId;
     public string selectedServiceId;
     public string selectedCharacteristicId;
 
     public float heartRateAverage = 0f;
-    public int heartBeatsPerMinute = 0;
+    public static int heartBeatsPerMinute { get; private set; }
     public int heartRateSamples = 0;
 
     private long totalHeartRate = 0;
@@ -24,15 +23,12 @@ public class HeartRateService : MonoBehaviour
     private const string HeartRateServiceID = "180D";
     private const string HeartRateCharacteristicID = "2A37";
 
-    public delegate void ConnectionHandler();
-    public event ConnectionHandler OnConnected;
-
     Dictionary<string, string> devices = new Dictionary<string, string>();
     string lastError;
 
-    //void Start() {
-    //    //bpm.text = "0";
-    //}
+    void Awake() {
+        startScan = true;
+    }
 
     // Update is called once per frame
     void Update()
@@ -122,7 +118,6 @@ public class HeartRateService : MonoBehaviour
 
         if (isSubscribed)
         {
-            OnConnected?.Invoke();
             HeartRateAPI.BLEData res = new HeartRateAPI.BLEData();
             while (HeartRateAPI.PollData(out res, false))
             {
