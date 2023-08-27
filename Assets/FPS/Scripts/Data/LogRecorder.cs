@@ -36,7 +36,7 @@ public class LogRecorder : MonoBehaviour
     {
         string sceneName = SceneManager.GetActiveScene().name;
         string dateTimeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-        logFileName = sceneName + "_debug_log_{dateTimeString}.txt";
+        logFileName = sceneName + $"_debug_log_{dateTimeString}.txt";
         string logsFolderPath = Path.Combine(Application.dataPath, "logs");
         if (!Directory.Exists(logsFolderPath))
         {

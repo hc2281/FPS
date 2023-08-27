@@ -3,6 +3,7 @@ using UnityEngine;
 using System.IO;
 using Unity.FPS.Game;
 using Unity.FPS.Bluetooth;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public struct ModeBData
@@ -16,13 +17,14 @@ public struct ModeBData
 
 public class DataSaveToCSV : MonoBehaviour
 {
-    public GameFlowManager gameFlowManager;
+    public bool isCollecting = false;
     //public HeartRateDDA heartRateDDA;
     private float previousTime = 0f;
+    public GameFlowManager gameFlowManager;
 
     string filename = "";
-
-    private List<ModeBData> dataList = new List<ModeBData>(300);
+    private bool hasWrittenCSV = false;
+    private static List<ModeBData> dataList = new List<ModeBData>(300);
 
     void Start()
     {
@@ -31,29 +33,31 @@ public class DataSaveToCSV : MonoBehaviour
         {
             Directory.CreateDirectory(folderPath);
         }
+
+        string sceneName = SceneManager.GetActiveScene().name;
         string dateTimeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-        filename = Path.Combine(folderPath, $"HrDDA_{dateTimeString}.csv");
-
-
+        filename = Path.Combine(folderPath, sceneName + $"HrDDA_{dateTimeString}.csv");
     }
 
     public void CollectAndStoreData()
-    {        
+    {
+        isCollecting = true;
         float totalTime = GameFlowManager.GetTotalTime();
 
-        Debug.Log("Current BPM: " + HeartRateService.heartBeatsPerMinute);
-        Debug.Log("Current Difficultyindex: " + HeartRateDDA.Difficultyindex);
-        Debug.Log("Current DifficultyLevel: " + DifficultyController.DifficultyLevel);
+
         // If previousTime was below an integer and totalTime is now above, then we've just passed an integer
         if (Mathf.Floor(previousTime) < Mathf.Floor(totalTime))
-        {
+        {        
+            Debug.Log("Current BPM: " + HeartRateService.heartBeatsPerMinute);
+            Debug.Log("Current Difficultyindex: " + HeartRateDDA.Difficultyindex);
+            Debug.Log("Current DifficultyLevel: " + DifficultyController.DifficultyLevel);
             ModeBData data = new()
             {
                 Time = totalTime,
                 HeartRate = HeartRateService.heartBeatsPerMinute,
                 Difficulty = HeartRateDDA.Difficultyindex,
                 DifficultyLevel = DifficultyController.DifficultyLevel,
-            };
+        };
             dataList.Add(data);
         }
 
@@ -61,21 +65,24 @@ public class DataSaveToCSV : MonoBehaviour
         previousTime = totalTime;
     }
 
-    private void Update()
+    void Update()
     {
         if (gameFlowManager.gameStarted)
         {
             CollectAndStoreData();
         }
-        if (gameFlowManager.SceneEnd)
+        if (gameFlowManager.SceneEnd && !hasWrittenCSV)
         {
-            WriteCSV();  
+            isCollecting = false;
+            WriteCSV();
+            hasWrittenCSV = true;
         }
     }
 
     public void WriteCSV()
     {
-        StreamWriter writer = new StreamWriter(filename);
+
+        StreamWriter writer = new StreamWriter(filename, true);
         writer.WriteLine("time,HeartRate,Difficulty,Level");
         foreach (ModeBData data in dataList)
         {

@@ -280,7 +280,6 @@ MonoBehaviour:
   selectedServiceId: 
   selectedCharacteristicId: 
   heartRateAverage: 0
-  heartBeatsPerMinute: 0
   heartRateSamples: 0
 --- !u!114 &1286381157
 MonoBehaviour:

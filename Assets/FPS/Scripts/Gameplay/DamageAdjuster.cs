@@ -26,7 +26,6 @@ public class DamageAdjuster : MonoBehaviour
                 proj.Damage *= 1.5f;
                 proj.Speed *= 1.5f;
                 proj.Radius *= 1.5f;
-                Debug.Log("Damage Adjusted to hard mode.");
             }
             else
             {

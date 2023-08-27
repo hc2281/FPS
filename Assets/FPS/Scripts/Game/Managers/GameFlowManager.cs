@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
-using System.Collections.Generic;
+using System.Collections;
 
 namespace Unity.FPS.Game
 {
@@ -39,6 +38,10 @@ namespace Unity.FPS.Game
         [Header("TimeLimit")]
         [Tooltip("The time limit for losing the game. Unit: Sec")]
         public float TimeLimit = 300;
+
+        public delegate void PlayerRestartHandler();
+        public static event PlayerRestartHandler OnPlayerRestart;
+
         public bool GameIsEnding { get; private set; }
         public bool gameStarted;
         public static bool PlayerRestart = false;
@@ -99,7 +102,11 @@ namespace Unity.FPS.Game
                     }
                 }
                 else
+                {
                     gameStarted = true;
+                }
+                    
+          
             }
         }
 
@@ -217,9 +224,11 @@ namespace Unity.FPS.Game
                 PlayerRestart = true;
                 
                 deathCount++;
-
-                m_SceneToLoad = SceneManager.GetActiveScene().name;
                 
+                m_SceneToLoad = SceneManager.GetActiveScene().name;
+
+                OnPlayerRestart?.Invoke();
+
                 m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay;
 
                 DisplayMessageEvent displayMessage = Events.DisplayMessageEvent;

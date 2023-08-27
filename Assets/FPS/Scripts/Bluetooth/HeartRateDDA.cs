@@ -34,6 +34,9 @@ namespace Unity.FPS.Bluetooth
             // Fetch the current heart rate and baseline from HeartRateService
             int HeartRate = HeartRateService.heartBeatsPerMinute;
             float HeartRateMedian = baselineBPM;
+
+            
+
             //float DeadZone = HeartRateMedian * ScopePercentage * DeadZoneFactor;
             float IdeaHeartRate = HeartRateMedian * (1f + ScopePercentage * (1f / 3f));
             // Compute the difference
@@ -47,6 +50,7 @@ namespace Unity.FPS.Bluetooth
             float HeartRateMax = IdeaHeartRate + HeartRateMedian * ScopePercentage * (1f / 3f);
 
             Difficultyindex = Mathf.Clamp((HeartRateMax - HeartRate) / (HeartRateMax - HeartRateMin), 0f, 1f);
+
         }
 
     }
