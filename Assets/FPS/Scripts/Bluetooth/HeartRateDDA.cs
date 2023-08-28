@@ -10,11 +10,11 @@ namespace Unity.FPS.Bluetooth
         //public float DeadZoneFactor = 0.2f;
         public float ScopePercentage = 0.2f;
 
-        public static float baselineBPM = 0f;
+        public static int baselineBPM = 0;
 
         public static float Difficultyindex;
 
-        public static void SaveBaseBPM(float bpm)
+        public static void SaveBaseBPM(int bpm)
         {
             baselineBPM = bpm;
         }

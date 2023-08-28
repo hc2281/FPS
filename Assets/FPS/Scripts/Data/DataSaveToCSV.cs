@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public struct ModeBData
 {
     public float Time;
+    public int BaseLine;
     public int HeartRate;
     public float Difficulty;
     public string DifficultyLevel;
@@ -47,13 +48,11 @@ public class DataSaveToCSV : MonoBehaviour
 
         // If previousTime was below an integer and totalTime is now above, then we've just passed an integer
         if (Mathf.Floor(previousTime) < Mathf.Floor(totalTime))
-        {        
-            Debug.Log("Current BPM: " + HeartRateService.heartBeatsPerMinute);
-            Debug.Log("Current Difficultyindex: " + HeartRateDDA.Difficultyindex);
-            Debug.Log("Current DifficultyLevel: " + DifficultyController.DifficultyLevel);
+        {
             ModeBData data = new()
             {
                 Time = totalTime,
+                BaseLine = HeartRateDDA.baselineBPM,
                 HeartRate = HeartRateService.heartBeatsPerMinute,
                 Difficulty = HeartRateDDA.Difficultyindex,
                 DifficultyLevel = DifficultyController.DifficultyLevel,

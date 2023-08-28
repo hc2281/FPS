@@ -14,7 +14,6 @@ public class LogRecorder : MonoBehaviour
     public static void SaveEnemyCount(int enemyCount)
     {
         int LastCount = KilledEnemy;
-        Debug.Log("Current Killed Enemy Count:" + KilledEnemy);
         if (enemyCount > LastCount)
         {
             if (enemyCountList.Count != 0)
@@ -23,7 +22,6 @@ public class LogRecorder : MonoBehaviour
             }
             enemyCountList.Push(enemyCount);
             KilledEnemy = enemyCount;
-            Debug.Log("Current Killed Enemy Count:" + KilledEnemy);
         }
         else if (enemyCount <= LastCount)
         {

@@ -20,10 +20,12 @@ public class LoserData : MonoBehaviour
         resultsText.text = "Deaths: " + deaths.ToString();
 
         int i = deaths;
+        Debug.Log("Total death count:" + i);
         while (LogRecorder.enemyCountList.Count > 0)
         {
             int count = LogRecorder.enemyCountList.Pop();
             resultsText.text += "Round " + i + " Kill Enemy:" + count.ToString() + "\n"; // Append the information
+            Debug.Log("Round " + i + " Kill Enemy:" + count);
             i--;
         }
     }

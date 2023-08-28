@@ -8,7 +8,7 @@ namespace Unity.FPS.UI
 public class BaselineManager : MonoBehaviour
 {
 
-        public float baselineValue;
+        public int baselineValue;
         public PanelController panel;
 
         private float heartRateSum = 0f;
@@ -43,7 +43,7 @@ public class BaselineManager : MonoBehaviour
                 yield return new WaitForSeconds(1f);
             }
 
-            baselineValue = heartRateSum / heartRateCount;
+            baselineValue = (int) heartRateSum / heartRateCount;
             Debug.Log("Base BPM: " + baselineValue);
             HeartRateDDA.SaveBaseBPM(baselineValue);
 
@@ -54,7 +54,7 @@ public class BaselineManager : MonoBehaviour
 
         private void EndMeasure()
         {
-            heartRateSum = 0f;
+            heartRateSum = 0;
             heartRateCount = 0;
 
             panel.HideLoadingUI();

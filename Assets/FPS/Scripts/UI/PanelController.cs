@@ -37,7 +37,6 @@ public class PanelController : MonoBehaviour
         else
         {
             int death = GameFlowManager.GetDeathCount();
-            Debug.Log("Current Death Count:" + death);
             if (death == 0)
                 ShowLoadingUI(); // Only show the panel before the game    
             else

@@ -26,6 +26,5 @@ public class WinnerData : MonoBehaviour
             resultsText.text += "Round " + i + " Kill Enemy:" + count.ToString() + "\n"; // Append the information
             i--;
         }
-
     }
 }
