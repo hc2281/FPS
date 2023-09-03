@@ -21,7 +21,6 @@ namespace Unity.FPS.Gameplay
             difficulty = DifficultyController.DifficultyLevel;
             if (difficulty == "easy")
             {
-
                 SetWeaponState(WeaponState.DualGuns);
             }
             else
