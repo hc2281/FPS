@@ -32,7 +32,7 @@ public class BaselineManager : MonoBehaviour
         private IEnumerator MeasureHeartRateForOneMinute()
         {
             isMeasuring = true;  // Set flag to true as we're starting measurement
-            yield return new WaitForSeconds(60); // wait for 3 min
+            //yield return new WaitForSeconds(60); // wait for 3 min
 
             for (int i = 0; i < 120; i++)
             {

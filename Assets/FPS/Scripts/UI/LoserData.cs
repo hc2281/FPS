@@ -17,6 +17,7 @@ public class LoserData : MonoBehaviour
         GameFlowManager.ResetDeathCount();
         //int averageKill = kills / deaths;
         GameFlowManager.ResetTimer();
+        GameFlowManager.PlayerRestart = false;
         resultsText.text = "Deaths: " + deaths.ToString();
 
         int i = deaths;

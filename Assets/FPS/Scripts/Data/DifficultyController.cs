@@ -67,7 +67,7 @@ public class DifficultyController : MonoBehaviour
         shouldGetDifficulty = true;
     }
 
-    public static void GetDifficultyLevel()
+    public void GetDifficultyLevel()
     {
         if (HeartRateDDA.Difficultyindex <= 1f / 3f)
             DifficultyLevel = "easy";

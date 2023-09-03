@@ -15,6 +15,7 @@ public class WinnerData : MonoBehaviour
         GameFlowManager.ResetDeathCount();
         float timeTaken = GameFlowManager.GetTotalTime() + 1;
         GameFlowManager.ResetTimer();
+        GameFlowManager.PlayerRestart = false;
         int minutes = Mathf.FloorToInt(timeTaken / 60);
         int seconds = Mathf.FloorToInt(timeTaken % 60);
         TimeText.text = "Time Taken: " + string.Format("{0:00}:{1:00}", minutes, seconds) + " Death:" + deaths.ToString();

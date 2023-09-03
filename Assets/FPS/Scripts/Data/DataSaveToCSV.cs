@@ -82,17 +82,19 @@ public class DataSaveToCSV : MonoBehaviour
     {
 
         StreamWriter writer = new StreamWriter(filename, true);
-        writer.WriteLine("time,HeartRate,Difficulty,Level");
+        writer.WriteLine("time,Baseline,HeartRate,Difficulty,Level");
         foreach (ModeBData data in dataList)
         {
             writer.WriteLine(
                 data.Time + "," +
+                data.BaseLine + "," +
                 data.HeartRate + "," +
                 data.Difficulty + "," + 
                 data.DifficultyLevel
             );
         }
         Debug.Log($"CSV file written to \"{filename}\"");
+        dataList.Clear();
         writer.Flush();
         writer.Close();
     }

@@ -45,7 +45,7 @@ namespace Unity.FPS.Game
         public bool GameIsEnding { get; private set; }
         public bool gameStarted;
 
-        public bool PlayerRestart = false;
+        public static bool PlayerRestart = false;
         public bool SceneEnd { get; private set; }
         private bool isTutorial;
 
