@@ -39,9 +39,6 @@ namespace Unity.FPS.Game
         [Tooltip("The time limit for losing the game. Unit: Sec")]
         public float TimeLimit = 300;
 
-        public delegate void PlayerRestartHandler();
-        public static event PlayerRestartHandler OnPlayerRestart;
-
         public bool GameIsEnding { get; private set; }
         public bool gameStarted;
 
@@ -227,8 +224,6 @@ namespace Unity.FPS.Game
                 deathCount++;
                 
                 m_SceneToLoad = SceneManager.GetActiveScene().name;
-
-                OnPlayerRestart?.Invoke();
 
                 m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay;
 
