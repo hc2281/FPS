@@ -11,18 +11,6 @@ public class DifficultyController : MonoBehaviour
     private string sceneName;
     private static string lastDifficulty = "";
 
-    private bool shouldGetDifficulty = true;
-
-    private void OnEnable()
-    {
-        GameFlowManager.OnPlayerRestart += HandlePlayerRestart;
-    }
-
-    private void OnDisable()
-    {
-        GameFlowManager.OnPlayerRestart -= HandlePlayerRestart;
-    }
-
     void Start()
     {
         // Check the current scene name
@@ -46,25 +34,10 @@ public class DifficultyController : MonoBehaviour
 
     private void Update()
     {
-        if (sceneName == "ModeA" && shouldGetDifficulty)
+        if (sceneName == "ModeA")
         {
             GetDifficultyLevel();
         }
-    }
-
-    void HandlePlayerRestart()
-    {
-        shouldGetDifficulty = false;
-        StartCoroutine(EasyModeCoroutine());
-    }
-
-    IEnumerator EasyModeCoroutine()
-    {
-        DifficultyLevel = "easy";
-
-        yield return new WaitForSeconds(15f);
-
-        shouldGetDifficulty = true;
     }
 
     public void GetDifficultyLevel()
